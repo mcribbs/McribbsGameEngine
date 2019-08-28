@@ -10,6 +10,6 @@ public abstract class Game {
     }
 
     protected abstract void onStartup();
-    protected abstract void onFrameUpdate();
+    protected abstract void onFrameUpdate(float elapsedTime);
     protected abstract void onShutdown();
 }

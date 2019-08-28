@@ -26,8 +26,7 @@ class macGame extends Game {
    }
 
    @Override
-   protected void onFrameUpdate() {
-
+   protected void onFrameUpdate(float elapsedTime) {
    }
 
    @Override

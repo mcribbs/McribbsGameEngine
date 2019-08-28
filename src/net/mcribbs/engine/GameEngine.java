@@ -48,9 +48,16 @@ public class GameEngine {
 
     private void doLoop() {
         running = true;
+        long lastTime = System.currentTimeMillis();
 
         while(running) {
-            game.onFrameUpdate();
+            long currentTime = System.currentTimeMillis();
+            long elapsedTime = currentTime - lastTime;
+            lastTime = currentTime;
+            mainWindow.setTitle(game.title +
+                    " - FPS: " +
+                    (elapsedTime == 0 ? "Infinity" : String.format(".2f", 1000f/elapsedTime)));
+            game.onFrameUpdate(elapsedTime);
         }
     }
 }
