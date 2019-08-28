@@ -25,8 +25,13 @@ public class GameEngine {
     }
 
     private void createWindow() {
-        mainWindow = new JFrame(game.getTitle());
-        mainWindow.setBounds(50,100,400,150);
+        mainWindow = new JFrame(game.title + " - Initializing..." );
+        mainWindow.setBounds(
+                game.initialWindowPosition.x,
+                game.initialWindowPosition.y,
+                game.initialWindowSize.x,
+                game.initialWindowSize.y);
+        mainWindow.setResizable(false);
 
         mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         mainWindow.addWindowListener(new WindowAdapter() {

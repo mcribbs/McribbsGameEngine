@@ -2,14 +2,11 @@ package net.mcribbs.engine;
 
 public abstract class Game {
 
-    private String title;
+    protected String title;
+    protected Coords initialWindowPosition = new Coords();
+    protected Coords initialWindowSize = new Coords(100, 100);
 
-    protected Game(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
+    protected Game() {
     }
 
     protected abstract void onStartup();

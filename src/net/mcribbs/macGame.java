@@ -1,17 +1,22 @@
 package net.mcribbs;
 
+import net.mcribbs.engine.Coords;
 import net.mcribbs.engine.Game;
 import net.mcribbs.engine.GameEngine;
 
 class macGame extends Game {
 
-   private macGame(String title) {
-      super(title);
+   private macGame() {
+      super();
    }
 
    public static void main(String[] args) {
       System.out.println("Starting game...");
-      GameEngine engine = new GameEngine(new macGame("Matt's macGame"));
+      macGame myGame = new macGame();
+      myGame.title = "Matt's Game";
+      myGame.initialWindowPosition = new Coords(50,100);
+      myGame.initialWindowSize = new Coords(640, 480);
+      GameEngine engine = new GameEngine(myGame);
       engine.start();
    }
 
