@@ -45,7 +45,7 @@ public class GameEngine {
         canvas.setMinimumSize(s);
 
         /// Setup window
-        frame = new JFrame(gc.title + " - Initializing..." );
+        frame = new JFrame(gc.title);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
             @Override
