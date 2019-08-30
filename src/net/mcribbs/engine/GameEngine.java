@@ -84,7 +84,12 @@ public class GameEngine {
 
             // Update the screen
             g.drawImage(gc.image, 0,0, (int)(gc.width * gc.scale), (int)(gc.height * gc.scale), null);
-            buff.show();
+            try {
+                buff.show();
+            }
+            catch (IllegalStateException e) {
+                // On shutdown sometimes reaches after buffers have been destroyed
+            }
 
             // Be nice to the CPU
             try {
