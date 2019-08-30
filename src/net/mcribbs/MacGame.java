@@ -1,21 +1,24 @@
 package net.mcribbs;
 
-import net.mcribbs.engine.Coords;
-import net.mcribbs.engine.Game;
+import net.mcribbs.engine.GameContainer;
 import net.mcribbs.engine.GameEngine;
 
-class macGame extends Game {
+import java.awt.*;
+import java.util.Random;
 
-   private macGame() {
+class MacGame extends GameContainer {
+
+   private MacGame() {
       super();
    }
 
    public static void main(String[] args) {
       System.out.println("Starting game...");
-      macGame myGame = new macGame();
+      MacGame myGame = new MacGame();
       myGame.title = "Matt's Game";
-      myGame.initialWindowPosition = new Coords(50,100);
-      myGame.initialWindowSize = new Coords(640, 480);
+      myGame.width = 320;
+      myGame.height = 240;
+      myGame.scale = 3f;
       GameEngine engine = new GameEngine(myGame);
       engine.start();
    }
@@ -27,6 +30,14 @@ class macGame extends Game {
 
    @Override
    protected void onFrameUpdate(float elapsedTime) {
+      renderer.clear();
+
+      Random r = new Random();
+      for (int i = 0; i < 2000; i++) {
+         int x = Math.abs(r.nextInt()) % width;
+         int y = Math.abs(r.nextInt()) % height;
+         renderer.drawPoint(x, y);
+      }
    }
 
    @Override
