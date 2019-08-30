@@ -64,7 +64,7 @@ public class GameEngine {
         buff = canvas.getBufferStrategy();
         g = buff.getDrawGraphics();
 
-        gc.renderer = new Renderer(gc);
+        gc.renderer = new Renderer(gc.image);
     }
 
     private void doLoop() {
