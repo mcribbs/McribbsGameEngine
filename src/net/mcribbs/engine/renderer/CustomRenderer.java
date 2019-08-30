@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-public class CustomRenderer implements Renderer {
+public class CustomRenderer extends AbstractRenderer {
 
     private int width, height;
     private int[] p;
@@ -15,26 +15,55 @@ public class CustomRenderer implements Renderer {
         p = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     }
 
-    public void clear() {
+    @Override
+    public void draw(int x, int y, Color c) {
+        p[y*width + x] = c.getRGB();
+    }
+
+    @Override
+    public void drawLine(int x1, int y1, int x2, int y2, Color c) {
+
+    }
+
+    @Override
+    public void drawCircle(int x, int y, int radius, Color c) {
+
+    }
+
+    @Override
+    public void fillCircle(int x, int y, int radius, Color c) {
+
+    }
+
+    @Override
+    public void drawRect(int x, int y, int w, int h, Color c) {
+
+    }
+
+    @Override
+    public void fillRect(int x, int y, int w, int h, Color c) {
+
+    }
+
+    @Override
+    public void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Color c) {
+
+    }
+
+    @Override
+    public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Color c) {
+
+    }
+
+    @Override
+    public void drawString(int x, int y, String text, Color c) {
+
+    }
+
+    @Override
+    public void clear(Color c) {
         for (int i = 0; i < p.length; i++) {
             p[i] = 0;
         }
-    }
-
-    public void drawPoint(int x, int y) {
-        p[y*width + x] = Color.green.getRGB();
-    }
-
-    public void drawLine(int x1, int y1, int x2, int y2, Color c) {
-    }
-
-
-
-
-
-
-
-
-    public void drawString(String s, int x, int y, Color c) {
     }
 }

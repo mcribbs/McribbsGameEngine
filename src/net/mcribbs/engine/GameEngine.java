@@ -84,7 +84,7 @@ public class GameEngine {
 
             // Call game to do it's thing!
             gc.onFrameUpdate(elapsedTime);
-            gc.renderer.drawString(String.format("%.2f", fps) , 5, 15, Color.green);
+            gc.renderer.drawString(5, 15, String.format("%.2f", fps), Color.green);
 
             // Update the screen
             g.drawImage(gc.image, 0,0, (int)(gc.width * gc.scale), (int)(gc.height * gc.scale), null);
