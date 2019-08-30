@@ -77,11 +77,10 @@ public class GameEngine {
             long elapsedTime = currentTime - lastTime;
             lastTime = currentTime;
             float fps = 1000f/elapsedTime;
-            //frame.setTitle(gc.title + " - FPS: " + fps);
-            System.out.println(fps);
 
             // Call game to do it's thing!
             gc.onFrameUpdate(elapsedTime);
+            gc.renderer.drawString(String.format("%.2f", fps) , 5, 15, Color.green);
 
             // Update the screen
             g.drawImage(gc.image, 0,0, (int)(gc.width * gc.scale), (int)(gc.height * gc.scale), null);

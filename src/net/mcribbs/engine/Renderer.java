@@ -35,4 +35,16 @@ public class Renderer {
         g.setColor(c);
         g.drawLine(x1, y1, x2, y2);
     }
+
+
+
+
+
+
+
+
+    public void drawString(String s, int x, int y, Color c) {
+        g.setColor(c);
+        g.drawString(s, x, y);
+    }
 }
