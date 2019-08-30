@@ -1,5 +1,8 @@
 package net.mcribbs.engine;
 
+import net.mcribbs.engine.renderer.BuiltinRenderer;
+import net.mcribbs.engine.renderer.CustomRenderer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -64,7 +67,8 @@ public class GameEngine {
         buff = canvas.getBufferStrategy();
         g = buff.getDrawGraphics();
 
-        gc.renderer = new Renderer(gc.image);
+        gc.renderer = new BuiltinRenderer(gc.image);
+        //gc.renderer = new CustomRenderer(gc.image);
     }
 
     private void doLoop() {

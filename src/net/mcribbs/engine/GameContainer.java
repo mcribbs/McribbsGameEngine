@@ -1,5 +1,7 @@
 package net.mcribbs.engine;
 
+import net.mcribbs.engine.renderer.Renderer;
+
 import java.awt.image.BufferedImage;
 
 public abstract class GameContainer {

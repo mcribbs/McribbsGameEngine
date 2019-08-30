@@ -1,33 +1,23 @@
-package net.mcribbs.engine;
+package net.mcribbs.engine.renderer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.nio.Buffer;
 
-public class Renderer {
+public class BuiltinRenderer implements Renderer {
     private int width, height;
-    //private int[] p;
-    //private BufferedImage image;
     private Graphics g;
 
-    public Renderer(BufferedImage image) {
-        //this.image = image;
+    public BuiltinRenderer(BufferedImage image) {
         width = image.getWidth();
         height = image.getHeight();
         g = image.getGraphics();
-        //p = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     }
 
     public void clear() {
-        //for (int i = 0; i < p.length; i++) {
-            //p[i] = 0;
-        //}
         g.clearRect(0,0, width, height);
     }
 
     public void drawPoint(int x, int y) {
-        //p[y*image.getWidth() + x] = Color.green.getRGB();
         g.drawLine(x, y, x, y);
     }
 
