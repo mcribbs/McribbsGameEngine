@@ -5,6 +5,7 @@ import net.mcribbs.engine.renderer.CustomRenderer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -14,6 +15,8 @@ public class GameEngine {
 
     private GameContainer gc;
     private boolean running = false;
+
+    private boolean showFPS = false;
 
     private JFrame frame;
     private BufferStrategy buff;
@@ -85,7 +88,14 @@ public class GameEngine {
 
             // Call game to do it's thing!
             gc.onFrameUpdate(elapsedTime);
-            gc.renderer.drawString(5, 15, String.format("%.2f", fps), Color.green);
+
+            // Draw fps
+            if (gc.input.isKeyHeld(KeyEvent.VK_CONTROL) && gc.input.isKeyUp(KeyEvent.VK_F)) {
+                showFPS = !showFPS;
+            }
+            if (showFPS) {
+                gc.renderer.drawString(5, 15, String.format("%.2f", fps), Color.green);
+            }
 
             // Update the screen
             g.drawImage(gc.image, 0,0, (int)(gc.width * gc.scale), (int)(gc.height * gc.scale), null);
