@@ -11,6 +11,12 @@ public class BuiltinRenderer extends AbstractRenderer {
         width = image.getWidth();
         height = image.getHeight();
         g = image.getGraphics();
+
+        // Render some garbage text to a throw away image to work around bug in java
+        // https://bugs.openjdk.java.net/browse/JDK-8179209
+        BufferedImage scratch = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        Graphics sg = scratch.getGraphics();
+        sg.drawString("x", 0, 0);
     }
 
     @Override
