@@ -16,7 +16,6 @@ public class GameEngine {
     private boolean running = false;
 
     private JFrame frame;
-    private Canvas canvas;
     private BufferStrategy buff;
     private Graphics g;
 
@@ -25,24 +24,24 @@ public class GameEngine {
     }
 
     public void start() {
-        doInit();
-        createWindow();
-        doLoop();
-    }
-
-    private void doInit() {
         // Let game set things up
         gc.onStartup();
+
+        // Hook up graphics and input
+        createWindow();
+        gc.input = new InputManager(gc);
+
+        doLoop();
     }
 
     private void createWindow() {
         // Create drawing surface
         gc.image = new BufferedImage(gc.width, gc.height, BufferedImage.TYPE_INT_RGB);
-        canvas = new Canvas();
+        gc.canvas = new Canvas();
         Dimension s = new Dimension((int)(gc.width * gc.scale), (int)(gc.height * gc.scale));
-        canvas.setPreferredSize(s);
-        canvas.setMaximumSize(s);
-        canvas.setMinimumSize(s);
+        gc.canvas.setPreferredSize(s);
+        gc.canvas.setMaximumSize(s);
+        gc.canvas.setMinimumSize(s);
 
         /// Setup window
         frame = new JFrame(gc.title);
@@ -58,15 +57,17 @@ public class GameEngine {
         });
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
-        frame.add(canvas, BorderLayout.CENTER);
+        frame.add(gc.canvas, BorderLayout.CENTER);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        canvas.createBufferStrategy(2);
-        buff = canvas.getBufferStrategy();
+        // Add drawing canvas
+        gc.canvas.createBufferStrategy(2);
+        buff = gc.canvas.getBufferStrategy();
         g = buff.getDrawGraphics();
 
+        // Attach a renderer
         gc.renderer = new BuiltinRenderer(gc.image);
         //gc.renderer = new CustomRenderer(gc.image);
     }
@@ -94,6 +95,9 @@ public class GameEngine {
             catch (IllegalStateException e) {
                 // On shutdown sometimes reaches after buffers have been destroyed
             }
+
+            // Get new input state
+            gc.input.update();
 
             // Be nice to the CPU
             try {

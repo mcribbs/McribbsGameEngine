@@ -2,6 +2,7 @@ package net.mcribbs.engine;
 
 import net.mcribbs.engine.renderer.Renderer;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class GameContainer {
@@ -12,7 +13,9 @@ public abstract class GameContainer {
     protected float scale = 1f;
 
     protected BufferedImage image;
+    protected Canvas canvas;
     protected Renderer renderer;
+    protected InputManager input;
 
     protected GameContainer() {}
 
