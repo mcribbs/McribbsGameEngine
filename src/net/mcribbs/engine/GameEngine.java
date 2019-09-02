@@ -6,6 +6,7 @@ import net.mcribbs.engine.renderer.CustomRenderer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -32,6 +33,7 @@ public class GameEngine {
         // Hook up graphics and input
         createWindow();
         gc.input = InputManager.getInstance(gc);
+        new HotkeyListener(gc.canvas);
 
         doLoop();
     }
@@ -88,9 +90,6 @@ public class GameEngine {
             gc.onFrameUpdate(elapsedTime);
 
             // Draw fps
-            if (gc.input.isKeyHeld(KeyEvent.VK_CONTROL) && gc.input.isKeyReleased(KeyEvent.VK_F)) {
-                showFPS = !showFPS;
-            }
             if (showFPS) {
                 gc.renderer.drawString(5, 15, String.format("%.0f", fps), Color.green);
             }
@@ -106,7 +105,7 @@ public class GameEngine {
 
             // Be nice to the CPU
             try {
-                Thread.sleep(1);
+                Thread.sleep(0);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -116,7 +115,33 @@ public class GameEngine {
     private void exit() {
         // Let game cleanup
         gc.onShutdown();
-
         g.dispose();
+    }
+
+    private class HotkeyListener implements KeyListener {
+        private boolean controlHeld = false;
+
+        protected HotkeyListener(Canvas c) {
+            c.addKeyListener(this);
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            // Not needed
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+                controlHeld = true;
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+                controlHeld = false;
+            if (controlHeld && (e.getKeyCode() == KeyEvent.VK_F))
+                showFPS = !showFPS;
+        }
     }
 }
