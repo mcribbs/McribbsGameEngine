@@ -32,7 +32,7 @@ public class GameEngine {
 
         // Hook up graphics and input
         createWindow();
-        gc.input = new InputManager(gc);
+        gc.input = InputManager.getInstance(gc);
 
         doLoop();
     }
@@ -90,11 +90,15 @@ public class GameEngine {
             gc.onFrameUpdate(elapsedTime);
 
             // Draw fps
-            if (gc.input.isKeyHeld(KeyEvent.VK_CONTROL) && gc.input.isKeyUp(KeyEvent.VK_F)) {
+            if (gc.input.isKeyHeld(KeyEvent.VK_CONTROL) && gc.input.isKeyReleased(KeyEvent.VK_F)) {
                 showFPS = !showFPS;
             }
+
+            // Get new input state
+            gc.input.update();
+
             if (showFPS) {
-                gc.renderer.drawString(5, 15, String.format("%.2f", fps), Color.green);
+                gc.renderer.drawString(5, 15, String.format("%.0f", fps), Color.green);
             }
 
             // Update the screen
@@ -105,9 +109,6 @@ public class GameEngine {
             catch (IllegalStateException e) {
                 // On shutdown sometimes reaches after buffers have been destroyed
             }
-
-            // Get new input state
-            gc.input.update();
 
             // Be nice to the CPU
             try {

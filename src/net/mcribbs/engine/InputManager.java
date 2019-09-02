@@ -1,11 +1,9 @@
 package net.mcribbs.engine;
 
-import net.mcribbs.engine.GameContainer;
-
 import java.awt.event.*;
 
-public class InputManager implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
-
+public class InputManager {
+    private static InputManager instance;
     private GameContainer gc;
 
     private static final int NUM_KEYS = 256;
@@ -16,110 +14,122 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
     private boolean[] buttons = new boolean[NUM_BUTTONS];
     private boolean[] buttonsLast = new boolean[NUM_BUTTONS];
 
-    protected float mouseX, mouseY;
-    protected int mouseScroll;
+    public float mouseX, mouseY;
+    public int mouseScroll;
 
 
-    public InputManager(GameContainer gc) {
+    private InputManager(GameContainer gc) {
         this.gc = gc;
+        Listener listener = new Listener();
 
         mouseX = 0;
         mouseY = 0;
         mouseScroll = 0;
 
-        gc.canvas.addKeyListener(this);
-        gc.canvas.addMouseListener(this);
-        gc.canvas.addMouseMotionListener(this);
-        gc.canvas.addMouseWheelListener(this);
+        gc.canvas.addKeyListener(listener);
+        gc.canvas.addMouseListener(listener);
+        gc.canvas.addMouseMotionListener(listener);
+        gc.canvas.addMouseWheelListener(listener);
     }
 
-    protected void update() {
-        for (int i = 0; i < NUM_KEYS; i++) {
-            keysLast[i] = keys[i];
+    static InputManager getInstance(GameContainer gc) {
+        if (instance == null) {
+            instance = new InputManager(gc);
         }
-        for (int i = 0; i < NUM_BUTTONS; i++) {
-            buttonsLast[i] = buttons[i];
-        }
+        return instance;
     }
 
-    protected boolean isKeyHeld(int key) {
+    synchronized void update() {
+        // Save last key state for press/release detection
+        System.arraycopy(keys, 0, keysLast, 0, NUM_KEYS);
+
+        // Save last button state for press/release detection
+        System.arraycopy(buttons, 0, buttonsLast, 0, NUM_BUTTONS);
+
+        mouseScroll = 0;
+    }
+
+    public boolean isKeyHeld(int key) {
         return keys[key];
     }
 
-    protected boolean isKeyUp(int key) {
+    public boolean isKeyReleased(int key) {
         return !keys[key] && keysLast[key];
     }
 
-    protected boolean isKeyDown(int key) {
-        return keys[key] && keysLast[key];
+    public boolean isKeyPressed(int key) {
+        return keys[key] && !keysLast[key];
     }
 
-    protected boolean isButtonHeld(int button) {
+    public boolean isButtonHeld(int button) {
         return buttons[button];
     }
 
-    protected boolean isButtonUp(int button) {
+    public boolean isButtonReleased(int button) {
         return !buttons[button] && buttonsLast[button];
     }
 
-    protected boolean isButtonDown(int button) {
+    public boolean isButtonPressed(int button) {
         return buttons[button] && !buttonsLast[button];
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
+    private class Listener implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
-    }
+        @Override
+        public void keyTyped(KeyEvent e) {
+            // Not needed
+        }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        keys[e.getKeyCode()] = true;
-    }
+        @Override
+        public synchronized void keyPressed(KeyEvent e) {
+            keys[e.getKeyCode()] = true;
+        }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        keys[e.getKeyCode()] = false;
-    }
+        @Override
+        public synchronized void keyReleased(KeyEvent e) {
+            keys[e.getKeyCode()] = false;
+        }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            // Not needed
+        }
 
-    }
+        @Override
+        public synchronized void mousePressed(MouseEvent e) {
+            buttons[e.getButton()] = true;
+        }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        buttons[e.getButton()] = true;
-    }
+        @Override
+        public synchronized void mouseReleased(MouseEvent e) {
+            buttons[e.getButton()] = false;
+        }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        buttons[e.getButton()] = false;
-    }
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            // Not needed
+        }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
+        @Override
+        public void mouseExited(MouseEvent e) {
+            // Not needed
+        }
 
-    }
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            mouseX = e.getX() / gc.scale;
+            mouseY = e.getY() / gc.scale;
+        }
 
-    @Override
-    public void mouseExited(MouseEvent e) {
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            mouseX = e.getX() / gc.scale;
+            mouseY = e.getY() / gc.scale;
+        }
 
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        mouseX = e.getX() / gc.scale;
-        mouseY = e.getY() / gc.scale;
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        mouseX = e.getX() / gc.scale;
-        mouseY = e.getY() / gc.scale;
-    }
-
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        mouseScroll = e.getWheelRotation();
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            mouseScroll = e.getWheelRotation();
+        }
     }
 }
