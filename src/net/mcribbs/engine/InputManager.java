@@ -7,12 +7,14 @@ public class InputManager {
     private GameContainer gc;
 
     private static final int NUM_KEYS = 256;
-    private boolean[] keys = new boolean[NUM_KEYS];
-    private boolean[] keysLast = new boolean[NUM_KEYS];
+    private boolean[] keysHeld = new boolean[NUM_KEYS];
+    private boolean[] keysReleased = new boolean[NUM_KEYS];
+    private boolean[] keysPressed = new boolean[NUM_KEYS];
 
     private static final int NUM_BUTTONS = 5;
-    private boolean[] buttons = new boolean[NUM_BUTTONS];
-    private boolean[] buttonsLast = new boolean[NUM_BUTTONS];
+    private boolean[] buttonsHeld = new boolean[NUM_BUTTONS];
+    private boolean[] buttonsReleased = new boolean[NUM_BUTTONS];
+    private boolean[] buttonsPressed = new boolean[NUM_BUTTONS];
 
     public float mouseX, mouseY;
     public int mouseScroll;
@@ -39,38 +41,36 @@ public class InputManager {
         return instance;
     }
 
-    synchronized void update() {
-        // Save last key state for press/release detection
-        System.arraycopy(keys, 0, keysLast, 0, NUM_KEYS);
-
-        // Save last button state for press/release detection
-        System.arraycopy(buttons, 0, buttonsLast, 0, NUM_BUTTONS);
-
-        mouseScroll = 0;
-    }
-
     public boolean isKeyHeld(int key) {
-        return keys[key];
+        return keysHeld[key];
     }
 
     public boolean isKeyReleased(int key) {
-        return !keys[key] && keysLast[key];
+        boolean released = keysReleased[key];
+        keysReleased[key] = false;
+        return released;
     }
 
     public boolean isKeyPressed(int key) {
-        return keys[key] && !keysLast[key];
+        boolean pressed = keysPressed[key];
+        keysPressed[key] = false;
+        return pressed;
     }
 
     public boolean isButtonHeld(int button) {
-        return buttons[button];
+        return buttonsHeld[button];
     }
 
     public boolean isButtonReleased(int button) {
-        return !buttons[button] && buttonsLast[button];
+        boolean released = buttonsReleased[button];
+        buttonsReleased[button] = false;
+        return released;
     }
 
     public boolean isButtonPressed(int button) {
-        return buttons[button] && !buttonsLast[button];
+        boolean pressed = buttonsPressed[button];
+        buttonsPressed[button] = false;
+        return pressed;
     }
 
     private class Listener implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
@@ -82,12 +82,18 @@ public class InputManager {
 
         @Override
         public synchronized void keyPressed(KeyEvent e) {
-            keys[e.getKeyCode()] = true;
+            int k = e.getKeyCode();
+            if (!keysHeld[k])
+                keysPressed[k] = true;
+            keysHeld[k] = true;
         }
 
         @Override
         public synchronized void keyReleased(KeyEvent e) {
-            keys[e.getKeyCode()] = false;
+            int k = e.getKeyCode();
+            if (keysHeld[k])
+                keysReleased[k] = true;
+            keysHeld[k] = false;
         }
 
         @Override
@@ -97,12 +103,18 @@ public class InputManager {
 
         @Override
         public synchronized void mousePressed(MouseEvent e) {
-            buttons[e.getButton()] = true;
+            int b = e.getButton();
+            if (!buttonsHeld[b])
+                buttonsPressed[b] = true;
+            buttonsHeld[b] = true;
         }
 
         @Override
         public synchronized void mouseReleased(MouseEvent e) {
-            buttons[e.getButton()] = false;
+            int b = e.getButton();
+            if (buttonsHeld[b])
+                buttonsReleased[b] = true;
+            buttonsHeld[b] = false;
         }
 
         @Override

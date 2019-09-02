@@ -91,10 +91,6 @@ public class GameEngine {
             if (gc.input.isKeyHeld(KeyEvent.VK_CONTROL) && gc.input.isKeyReleased(KeyEvent.VK_F)) {
                 showFPS = !showFPS;
             }
-
-            // Get new input state
-            gc.input.update();
-
             if (showFPS) {
                 gc.renderer.drawString(5, 15, String.format("%.0f", fps), Color.green);
             }
