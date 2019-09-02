@@ -15,7 +15,6 @@ public class GameEngine {
 
     private GameContainer gc;
     private boolean running = false;
-
     private boolean showFPS = false;
 
     private JFrame frame;
@@ -54,8 +53,7 @@ public class GameEngine {
             public void windowClosing(WindowEvent event) {
                 running = false;
                 frame.dispose();
-                // Let game cleanup
-                gc.onShutdown();
+                exit();
             }
         });
         frame.setResizable(false);
@@ -117,5 +115,12 @@ public class GameEngine {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void exit() {
+        // Let game cleanup
+        gc.onShutdown();
+
+        g.dispose();
     }
 }

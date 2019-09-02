@@ -17,6 +17,7 @@ public class BuiltinRenderer extends AbstractRenderer {
         BufferedImage scratch = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         Graphics sg = scratch.getGraphics();
         sg.drawString("x", 0, 0);
+        sg.dispose();
     }
 
     @Override
