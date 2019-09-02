@@ -28,10 +28,10 @@ public class InputManager {
         mouseY = 0;
         mouseScroll = 0;
 
-        gc.canvas.addKeyListener(listener);
-        gc.canvas.addMouseListener(listener);
-        gc.canvas.addMouseMotionListener(listener);
-        gc.canvas.addMouseWheelListener(listener);
+        gc.window.canvas.addKeyListener(listener);
+        gc.window.canvas.addMouseListener(listener);
+        gc.window.canvas.addMouseMotionListener(listener);
+        gc.window.canvas.addMouseWheelListener(listener);
     }
 
     static InputManager getInstance(GameContainer gc) {

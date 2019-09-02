@@ -30,7 +30,7 @@ class MacGame extends GameContainer {
 
    @Override
    protected void onFrameUpdate(float elapsedTime) {
-      renderer.clear();
+      window.renderer.clear();
 
       if(input.isKeyPressed(KeyEvent.VK_CONTROL)) {
          System.out.println("Control pressed");
@@ -51,7 +51,7 @@ class MacGame extends GameContainer {
          int y = Math.abs(r.nextInt()) % height;
          Color c = new Color(Math.abs(r.nextInt()) % 255, Math.abs(r.nextInt()) % 255, Math.abs(r.nextInt()) % 255);
 
-         renderer.draw(x, y, c);
+         window.renderer.draw(x, y, c);
       }
    }
 
