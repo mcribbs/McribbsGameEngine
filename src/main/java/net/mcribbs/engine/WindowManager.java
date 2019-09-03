@@ -33,7 +33,9 @@ public class WindowManager {
         return instance;
     }
 
-    void createWindow(GameEngine e) {
+    void createWindow(GameEngine engine) {
+        final GameEngine e = engine;
+
         // Create drawing surface
         image = new BufferedImage(gc.width, gc.height, BufferedImage.TYPE_INT_RGB);
         canvas = new Canvas();
